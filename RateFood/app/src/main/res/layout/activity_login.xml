@@ -17,7 +17,7 @@
         android:hint="Email"
         android:inputType="textPersonName"
         android:textAllCaps="false"
-        android:textColor="#000000"
+        android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="@+id/PasswordEditText"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,6 +29,7 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="@+id/LoginBtn"
         app:layout_constraintTop_toBottomOf="@+id/EmailEditText" />
 
@@ -37,7 +38,7 @@
         android:layout_width="214dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:alpha=".25"
+        android:alpha=".4"
         android:text="LOGIN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +65,7 @@
         android:text="FoodRaterz"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textColor="#000000"
+        android:textColor="@color/colorAccent"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
