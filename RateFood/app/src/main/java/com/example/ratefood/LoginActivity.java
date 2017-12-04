@@ -63,8 +63,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    finish();
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                     finish();
                 }else{
@@ -75,13 +76,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(mAuth.getCurrentUser() != null){
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
+    @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.LoginTxt:
+                finish();
                 startActivity(new Intent(this, RegisterActivity.class));
                 break;
 
             case R.id.LoginBtn:
+                finish();
                 userLogin();
                 break;
         }
