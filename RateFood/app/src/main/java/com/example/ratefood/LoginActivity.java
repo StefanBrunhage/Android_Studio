@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        FirebaseUser user = mAuth.getCurrentUser();
+                        final FirebaseUser user = mAuth.getCurrentUser();
                         if(user.isEmailVerified()){
                             finish();
                             Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -78,7 +78,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             startActivity(i);
                         }
                         else{
-                            CheckEmail.setText("Email is not verified");
+                            CheckEmail.setText("Email is not verified (Click to verify)");
+                            CheckEmail.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(LoginActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     }else{
                         Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
