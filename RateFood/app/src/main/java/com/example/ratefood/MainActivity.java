@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         websiteURL = (EditText) findViewById(R.id.WebsiteEditText);
 
         imageView = (ImageView) findViewById(R.id.UploadImageView);
-        progressBar = findViewById(R.id.progressBar);
 
         imageView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -145,18 +144,15 @@ public class MainActivity extends AppCompatActivity {
         StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
 
         if(uriProfileImage != null){
-            progressBar.setVisibility(View.VISIBLE);
             profileImageRef.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    progressBar.setVisibility(View.GONE);
                     profileImageUrl = taskSnapshot.getDownloadUrl().toString();
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
