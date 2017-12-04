@@ -73,16 +73,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         FirebaseUser user = mAuth.getCurrentUser();
                         if(user.isEmailVerified()){
                             finish();
-                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
+                        }
+                        else{
+                            CheckEmail.setText("Email is not verified");
                         }
                     }else{
                         Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-        CheckEmail.setText("Email is not verified");
+
         }
 
 
@@ -94,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FirebaseUser user = mAuth.getCurrentUser();
         if(mAuth.getCurrentUser() != null && user.isEmailVerified()){
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, ProfileActivity.class));
         }
     }
     @Override
