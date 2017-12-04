@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,12 +60,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        loadUserInformation();
+
         findViewById(R.id.SaveBtn).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 SaveUserInformation();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(mAuth.getCurrentUser() == null){
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
+    private void loadUserInformation() {
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if(user != null){
+            if(user.getPhotoUrl() != null){
+                Glide.with(this)
+                        .load(user.getPhotoUrl().toString())
+                        .into(imageView);
+            }
+            if(user.getDisplayName() != null){
+                name.setText(user.getDisplayName());
+            }
+        }
     }
 
     private void SaveUserInformation() {
@@ -75,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             name.requestFocus();
             return;
         }
+
         FirebaseUser user = mAuth.getCurrentUser();
 
         if(user != null && profileImageUrl != null){
