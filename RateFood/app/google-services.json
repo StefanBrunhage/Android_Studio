@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "907847947433",
+    "firebase_url": "https://ratefoodauth.firebaseio.com",
+    "project_id": "ratefoodauth",
+    "storage_bucket": "ratefoodauth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907847947433:android:014e7b48184d0b20",
+        "android_client_info": {
+          "package_name": "com.example.ratefood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907847947433-drv2jfcvsgr73g6gfda9bn36d2m87ggf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ratefood",
+            "certificate_hash": "5b62578b4a964f072b53218e7cc0ed0ac7e833c5"
+          }
+        },
+        {
+          "client_id": "907847947433-knbi8dreas5k3c7uvthra20dgo7lencg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1jRqX_0ClOtZ0j4iPpGPKOg-KpH5Kchk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907847947433-knbi8dreas5k3c7uvthra20dgo7lencg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
