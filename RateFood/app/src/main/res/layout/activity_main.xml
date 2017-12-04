@@ -47,13 +47,24 @@
     <ImageView
         android:id="@+id/UploadImageView"
         android:layout_width="125dp"
-        android:layout_height="125dp"
-        android:layout_marginBottom="41dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/NameEditText"
+        android:layout_height="0dp"
+        android:layout_marginBottom="251dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/EmailVerifiedTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_upload_you_tube" />
+
+    <TextView
+        android:id="@+id/EmailVerifiedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="147dp"
+        android:layout_marginStart="8dp"
+        android:text="Email is Verified"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/SaveBtn"
+        app:layout_constraintTop_toBottomOf="@+id/UploadImageView" />
 
 </android.support.constraint.ConstraintLayout>

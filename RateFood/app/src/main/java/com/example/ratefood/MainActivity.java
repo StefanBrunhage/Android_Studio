@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -32,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int CHOOSE_IMAGE = 101;
     ImageView imageView;
     EditText name, websiteURL;
+    TextView emailVerified;
 
     Uri uriProfileImage;
-    ProgressBar progressBar;
 
     String profileImageUrl;
 
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         name = (EditText) findViewById(R.id.NameEditText);
         websiteURL = (EditText) findViewById(R.id.WebsiteEditText);
+
+        emailVerified = (TextView) findViewById(R.id.EmailVerifiedTextView);
 
         imageView = (ImageView) findViewById(R.id.UploadImageView);
 
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadUserInformation() {
-        FirebaseUser user = mAuth.getCurrentUser();
+        final FirebaseUser user = mAuth.getCurrentUser();
 
         if(user != null){
             if(user.getPhotoUrl() != null){
@@ -90,6 +93,23 @@ public class MainActivity extends AppCompatActivity {
             }
             if(user.getDisplayName() != null){
                 name.setText(user.getDisplayName());
+            }
+            if(user.isEmailVerified()){
+                emailVerified.setText("Email verified");
+            }
+            else{
+                emailVerified.setText("Email not verified(Click to Verify)");
+                emailVerified.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(MainActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
             }
         }
     }
