@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,8 +20,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     FirebaseAuth mAuth;
     EditText EmailEditText, PasswordEditText;
-
-
+    TextView CheckEmail;
 
 
 
@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         EmailEditText = (EditText) findViewById(R.id.EmailEditText);
         PasswordEditText = (EditText) findViewById(R.id.PasswordEditText);
+        CheckEmail = (TextView) findViewById(R.id.CheckEmailTextView);
 
         findViewById(R.id.LoginTxt).setOnClickListener(this);
         findViewById(R.id.LoginBtn).setOnClickListener(this);
@@ -41,7 +42,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void userLogin(){
-
         String email = EmailEditText.getText().toString().trim();
         String password = PasswordEditText.getText().toString().trim();
 
@@ -66,21 +66,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        finish();
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(i);
-                        finish();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if(user.isEmailVerified()){
+                            finish();
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(i);
+                        }
                     }else{
                         Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
+        CheckEmail.setText("Email is not verified");
         }
 
 
@@ -89,8 +91,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-
-        if(mAuth.getCurrentUser() != null){
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(mAuth.getCurrentUser() != null && user.isEmailVerified()){
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
@@ -104,7 +106,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.LoginBtn:
-                finish();
                 userLogin();
                 break;
         }

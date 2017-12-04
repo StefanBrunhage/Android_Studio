@@ -15,10 +15,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText EmailEditText, PasswordEditText;
+    EditText EmailEditText, PasswordEditText, name;
 
     private FirebaseAuth mAuth;
 
@@ -31,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         EmailEditText = (EditText) findViewById(R.id.EmailEditText);
         PasswordEditText = (EditText) findViewById(R.id.PasswordEditText);
+        name = (EditText) findViewById(R.id.NameEditText);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -63,17 +65,37 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
+        final String displayName = name.getText().toString();
 
-
+        if(displayName.isEmpty()){
+            name.setError("Name Required");
+            name.requestFocus();
+            return;
+        }
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    finish();
-                    Intent i = new Intent(RegisterActivity.this, MainActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    if(user != null){
+                        UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(displayName)
+                                .build();
+                        user.sendEmailVerification();
+                        user.updateProfile(profile)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            finish();
+                                            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(i);
+                                        }
+                                    }
+                                });
+                    }
                 }else {
                     if(task.getException() instanceof FirebaseAuthUserCollisionException){
                         Toast.makeText(getApplicationContext(), "You are already registered", Toast.LENGTH_SHORT).show();
@@ -85,13 +107,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
         });
+
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        if(mAuth.getCurrentUser() != null){
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(mAuth.getCurrentUser() != null && user.isEmailVerified()){
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }

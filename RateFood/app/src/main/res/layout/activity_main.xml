@@ -6,66 +6,40 @@
     android:layout_height="match_parent"
     android:background="@drawable/fruit"
     tools:context="com.example.ratefood.MainActivity"
-    tools:layout_editor_absoluteY="81dp">
-
-    <EditText
-        android:id="@+id/NameEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp"
-        android:ems="10"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/WebsiteEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UploadImageView" />
+    tools:layout_editor_absoluteY="25dp">
 
     <EditText
         android:id="@+id/WebsiteEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:ems="10"
         android:hint="Website URL"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/SaveBtn"
-        app:layout_constraintStart_toStartOf="@+id/NameEditText"
-        app:layout_constraintTop_toBottomOf="@+id/NameEditText" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UploadImageView" />
 
     <Button
         android:id="@+id/SaveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="170dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginTop="21dp"
         android:alpha=".7"
         android:text="Save Profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/WebsiteEditText"
-        app:layout_constraintStart_toStartOf="@+id/WebsiteEditText"
-        app:layout_constraintTop_toBottomOf="@+id/WebsiteEditText" />
+        app:layout_constraintEnd_toEndOf="@+id/UploadImageView"
+        app:layout_constraintTop_toTopOf="@+id/UploadImageView" />
 
     <ImageView
         android:id="@+id/UploadImageView"
         android:layout_width="125dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="251dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginTop="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/EmailVerifiedTextView"
+        app:layout_constraintBottom_toTopOf="@+id/WebsiteEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_upload_you_tube" />
-
-    <TextView
-        android:id="@+id/EmailVerifiedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="147dp"
-        android:layout_marginStart="8dp"
-        android:text="Email is Verified"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/SaveBtn"
-        app:layout_constraintTop_toBottomOf="@+id/UploadImageView" />
 
 </android.support.constraint.ConstraintLayout>

@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CHOOSE_IMAGE = 101;
     ImageView imageView;
-    EditText name, websiteURL;
-    TextView emailVerified;
+    EditText websiteURL;
 
     Uri uriProfileImage;
 
@@ -48,10 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        name = (EditText) findViewById(R.id.NameEditText);
         websiteURL = (EditText) findViewById(R.id.WebsiteEditText);
-
-        emailVerified = (TextView) findViewById(R.id.EmailVerifiedTextView);
 
         imageView = (ImageView) findViewById(R.id.UploadImageView);
 
@@ -91,43 +87,14 @@ public class MainActivity extends AppCompatActivity {
                         .load(user.getPhotoUrl().toString())
                         .into(imageView);
             }
-            if(user.getDisplayName() != null){
-                name.setText(user.getDisplayName());
-            }
-            if(user.isEmailVerified()){
-                emailVerified.setText("Email verified");
-            }
-            else{
-                emailVerified.setText("Email not verified(Click to Verify)");
-                emailVerified.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(MainActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-            }
         }
     }
 
     private void SaveUserInformation() {
-        String displayName = name.getText().toString();
-
-        if(displayName.isEmpty()){
-            name.setError("Name Required");
-            name.requestFocus();
-            return;
-        }
-
         FirebaseUser user = mAuth.getCurrentUser();
 
         if(user != null && profileImageUrl != null){
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(displayName)
                     .setPhotoUri(uriProfileImage.parse(profileImageUrl))
                     .build();
 
