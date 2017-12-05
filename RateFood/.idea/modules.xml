@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RateFood.iml" filepath="$PROJECT_DIR$/RateFood.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Robert\Documents\GitHub\Android_Studio\RateFood\app\app.iml" filepath="C:\Users\Robert\Documents\GitHub\Android_Studio\RateFood\app\app.iml" />
     </modules>
   </component>
 </project>

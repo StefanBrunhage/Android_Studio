@@ -72,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserInformation() {
-        final FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = mAuth.getCurrentUser();
 
         if(user != null){
             if(user.getPhotoUrl() != null){
@@ -121,7 +121,9 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void uploadImageToFirebaseStorage() {
-        StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/" + user.getEmail() + ".jpg");
 
         if(uriProfileImage != null){
             profileImageRef.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
