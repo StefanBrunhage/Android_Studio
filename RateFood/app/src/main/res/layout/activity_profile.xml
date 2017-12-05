@@ -11,22 +11,24 @@
         android:id="@+id/SaveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="176dp"
+        android:layout_marginEnd="109dp"
+        android:layout_marginTop="34dp"
         android:alpha=".7"
         android:text="Save profile"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UploadImageView" />
+        app:layout_constraintStart_toEndOf="@+id/UploadImageView"
+        app:layout_constraintTop_toTopOf="@+id/UploadImageView" />
 
     <ImageView
         android:id="@+id/UploadImageView"
-        android:layout_width="125dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="326dp"
-        android:layout_marginTop="62dp"
+        android:layout_marginBottom="372dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/ToolbarBottom"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/SaveBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_upload_you_tube" />
