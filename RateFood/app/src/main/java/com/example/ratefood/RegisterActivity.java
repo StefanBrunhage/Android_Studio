@@ -82,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(displayName)
                                 .build();
-                        user.sendEmailVerification();
+
                         user.updateProfile(profile)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -95,6 +95,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         }
                                     }
                                 });
+                        user.sendEmailVerification();
                     }
                 }else {
                     if(task.getException() instanceof FirebaseAuthUserCollisionException){
@@ -107,9 +108,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
         });
-
-
-
     }
 
     @Override
