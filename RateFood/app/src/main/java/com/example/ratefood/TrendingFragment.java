@@ -23,6 +23,4 @@ public class TrendingFragment extends Fragment {
 
 
     }
-
-
 }
