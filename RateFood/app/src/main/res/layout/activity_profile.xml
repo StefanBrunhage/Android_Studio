@@ -7,42 +7,38 @@
     tools:context="com.example.ratefood.ProfileActivity"
     tools:layout_editor_absoluteY="25dp">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="46dp"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/UploadImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
     <Button
         android:id="@+id/SaveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="109dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginBottom="284dp"
         android:alpha=".7"
         android:text="Save profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/UploadImageView"
-        app:layout_constraintTop_toTopOf="@+id/UploadImageView" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/UploadImageView"
+        app:layout_constraintTop_toBottomOf="@+id/UploadImageView" />
 
     <ImageView
         android:id="@+id/UploadImageView"
-        android:layout_width="0dp"
+        android:layout_width="159dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="372dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/ToolbarBottom"
-        app:layout_constraintEnd_toStartOf="@+id/SaveBtn"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/SaveBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@android:drawable/ic_menu_upload_you_tube" />
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/ToolbarBottom"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UploadImageView" />
 
 </android.support.constraint.ConstraintLayout>
