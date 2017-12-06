@@ -1,7 +1,5 @@
 package com.example.ratefood;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,14 +9,15 @@ import android.view.ViewGroup;
 
 
 public class TrendingFragment extends Fragment {
-    private static final String TAG ="maintab1_fragment";
+
 
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_trending, container, false);
+        View view;
+        view = inflater.inflate(R.layout.fragment_trending, container, false);
         return view;
 
 
