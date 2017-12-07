@@ -1,5 +1,6 @@
 package com.example.ratefood.Profile;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ImageReader;
@@ -52,6 +53,8 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUserDatabase;
     private StorageReference mImageStorage;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,18 +127,39 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
+
+                mProgressDialog = new ProgressDialog(ProfileActivity.this);
+                mProgressDialog.setTitle("Uploading Image...");
+                mProgressDialog.setMessage("Please wait while we upload and process the image.");
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.show();
+
                 Uri resultUri = result.getUri();
 
-                StorageReference filePath = mImageStorage.child("Profile_image").child(random() + ".jpg");
+                String current_user_id = mCurrentUser.getUid();
+
+                StorageReference filePath = mImageStorage.child("Profile_image").child(current_user_id + ".jpg");
 
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ProfileActivity.this, "Working", Toast.LENGTH_SHORT).show();
+                            String download_url = task.getResult().getDownloadUrl().toString();
+
+                            mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        mProgressDialog.dismiss();
+                                        Toast.makeText(ProfileActivity.this, "Success Uploading.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
                         }
                         else{
                             Toast.makeText(ProfileActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();
                         }
                     }
                 });
@@ -146,17 +170,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    public static String random() {
-        Random generator = new Random();
-        StringBuilder randomStringBuilder = new StringBuilder();
-        int randomLength = generator.nextInt(10);
-        char tempChar;
-        for (int i = 0; i < randomLength; i++){
-            tempChar = (char) (generator.nextInt(96) + 32);
-            randomStringBuilder.append(tempChar);
-        }
-        return randomStringBuilder.toString();
-    }
 
 
 
