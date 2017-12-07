@@ -36,6 +36,8 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     //Profile Image cropper
     compile 'com.theartofdev.edmodo:android-image-cropper:2.5.+'
+    //Image displayer picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
 }
 

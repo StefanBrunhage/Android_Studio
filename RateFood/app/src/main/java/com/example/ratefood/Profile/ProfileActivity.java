@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -74,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 Intent galleryIntent = new Intent();
-                galleryIntent.setType("profile_image/*");
+                galleryIntent.setType("Profile_image/*");
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), CHOOSE_IMAGE);
 
@@ -84,16 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        findViewById(R.id.profilePicture).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                mUserDatabase = mFirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
-                HashMap<String, String> userMap = new HashMap<String, String>();
-                userMap.put("profile_image", "default");
-                mUserDatabase.setValue(userMap);
 
-            }
-        });
 
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -101,6 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String image = dataSnapshot.child("Profile_image").getValue().toString();
                 String email = dataSnapshot.child("Email").getValue().toString();
 
+                Picasso.with(ProfileActivity.this).load(image).into(mProfilePicture);
 
             }
 
@@ -146,7 +139,7 @@ public class ProfileActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String download_url = task.getResult().getDownloadUrl().toString();
 
-                            mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            mUserDatabase.child("Profile_image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
