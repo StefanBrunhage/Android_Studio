@@ -7,6 +7,12 @@
     tools:context="com.example.ratefood.Profile.ProfileActivity"
     tools:layout_editor_absoluteY="25dp">
 
+    <include
+        layout="@layout/layout_center_profile"
+        android:layout_height="584dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="56dp" />
+
     <ImageView
         android:id="@+id/profilePicture"
         android:layout_width="100dp"
@@ -15,6 +21,7 @@
         android:padding="100dp"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.056"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
