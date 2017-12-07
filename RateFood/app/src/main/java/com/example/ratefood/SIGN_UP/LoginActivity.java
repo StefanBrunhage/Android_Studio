@@ -17,13 +17,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
-
-    FirebaseAuth mAuth;
     EditText EmailEditText, PasswordEditText;
     TextView CheckEmail;
 
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDatabase;
 
 
     @Override
@@ -40,11 +43,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.LoginTxt).setOnClickListener(this);
         findViewById(R.id.LoginBtn).setOnClickListener(this);
 
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabase = mFirebaseDatabase.getReference();
+
 
     }
 
-    private void userLogin(){
-        String email = EmailEditText.getText().toString().trim();
+    private void userLogin()
+    {
+         final String email = EmailEditText.getText().toString().trim();
         String password = PasswordEditText.getText().toString().trim();
 
         if(email.isEmpty()){
@@ -68,38 +76,44 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        final FirebaseUser user = mAuth.getCurrentUser();
-                        if(user.isEmailVerified()){
-                            finish();
-                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(i);
-                        }
-                        else{
-                            CheckEmail.setText("Email is not verified (Click to verify)");
-                            CheckEmail.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            CheckEmail.setText("Emailverifications sent (Click to resend)");
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    }else{
-                        Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    final FirebaseUser user = mAuth.getCurrentUser();
+                    if(user.isEmailVerified()){
+                        StartMainActivity();
                     }
+                    else{
+                        CheckEmail.setText("Email is not verified (Click to verify)");
+                        CheckEmail.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        CheckEmail.setText("Emailverifications sent (Click to resend)");
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
+        });
 
-        }
+    }
+
+    public void StartMainActivity(){
+        finish();
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
+
+
 
 
 

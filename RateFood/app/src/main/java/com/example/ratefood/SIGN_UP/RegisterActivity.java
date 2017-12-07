@@ -18,12 +18,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText EmailEditText, PasswordEditText, name;
+    EditText EmailEditText, PasswordEditText;
 
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +40,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         EmailEditText = (EditText) findViewById(R.id.EmailEditText);
         PasswordEditText = (EditText) findViewById(R.id.PasswordEditText);
-        name = (EditText) findViewById(R.id.NameEditText);
 
         mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabase = mFirebaseDatabase.getReference();
+
 
         findViewById(R.id.RegisterBtn).setOnClickListener(this);
+
 
     }
 
     private void registerUser(){
-        String email = EmailEditText.getText().toString().trim();
+        final String email = EmailEditText.getText().toString().trim();
         String password = PasswordEditText.getText().toString().trim();
 
         if(email.isEmpty()){
@@ -67,49 +76,46 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        final String displayName = name.getText().toString();
-
-        if(displayName.isEmpty()){
-            name.setError("Name Required");
-            name.requestFocus();
-            return;
-        }
-
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     FirebaseUser user = mAuth.getCurrentUser();
-                    if(user != null){
-                        UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(displayName)
-                                .build();
+                    user.sendEmailVerification();
+                    mDatabase = mFirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+                    HashMap<String, String> dataMap = new HashMap<String, String>();
+                    dataMap.put("Email", email);
 
-                        user.updateProfile(profile)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            finish();
-                                            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            startActivity(i);
-                                        }
-                                    }
-                                });
-                        user.sendEmailVerification();
-                    }
+                    mDatabase.push().setValue(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this, "Stored...", Toast.LENGTH_SHORT).show();
+                                StartMainActivity();
+                            }
+                            else{
+                                Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
                 }else {
                     if(task.getException() instanceof FirebaseAuthUserCollisionException){
                         Toast.makeText(getApplicationContext(), "You are already registered", Toast.LENGTH_SHORT).show();
 
                     } else{
                         Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
                     }
                 }
             }
         });
+    }
+
+    public void StartMainActivity(){
+        finish();
+        Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
     }
 
     @Override

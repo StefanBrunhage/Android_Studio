@@ -12,14 +12,14 @@
         android:id="@+id/PasswordEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:textColor="@android:color/background_light"
         android:textColorHint="#ffffff"
-        app:layout_constraintStart_toStartOf="@+id/NameEditText"
-        app:layout_constraintTop_toBottomOf="@+id/NameEditText" />
+        app:layout_constraintStart_toStartOf="@+id/EmailEditText"
+        app:layout_constraintTop_toBottomOf="@+id/EmailEditText" />
 
     <Button
         android:id="@+id/RegisterBtn"
@@ -48,28 +48,15 @@
         android:id="@+id/EmailEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="139dp"
+        android:layout_marginTop="192dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textPersonName"
         android:textColor="@android:color/background_light"
         android:textColorHint="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/NameEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="Username"
-        android:inputType="textPersonName"
-        android:shadowColor="#ffffff"
-        android:textColor="@android:color/background_light"
-        android:textColorHint="#ffffff"
-        app:layout_constraintStart_toStartOf="@+id/EmailEditText"
-        app:layout_constraintTop_toBottomOf="@+id/EmailEditText" />
 
 </android.support.constraint.ConstraintLayout>
