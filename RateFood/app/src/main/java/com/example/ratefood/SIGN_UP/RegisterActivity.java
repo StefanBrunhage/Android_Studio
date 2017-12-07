@@ -30,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabase;
+    private DatabaseReference UserImagesDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabase = mFirebaseDatabase.getReference();
+        UserImagesDatabase = mFirebaseDatabase.getReference();
 
 
         findViewById(R.id.RegisterBtn).setOnClickListener(this);
@@ -86,12 +88,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     mDatabase = mFirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
                     HashMap<String, String> userMap = new HashMap<>();
                     userMap.put("Email", email);
-                    userMap.put("Profile_image", "profile_image");
+                    userMap.put("Profile_image", "profile_image"); //Makes this a placeholder for the profile picture (sets it to a simple string because they don't have a picture yet)
+
+
+
 
                     mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+
+                                UserImagesDatabase = mDatabase.child("Images");
+                                HashMap<String, String> imagesMap = new HashMap<>();
+                                imagesMap.put("Image", "PlaceHolder"); //Vet inte hur jag skall skapa Images mapp utan att ha en fil där
+                                UserImagesDatabase.setValue(imagesMap);
+
                                 Toast.makeText(RegisterActivity.this, "Stored...", Toast.LENGTH_SHORT).show();
                                 StartMainActivity();
                             }
@@ -100,6 +111,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             }
                         }
                     });
+
+
 
                 }else {
                     if(task.getException() instanceof FirebaseAuthUserCollisionException){
