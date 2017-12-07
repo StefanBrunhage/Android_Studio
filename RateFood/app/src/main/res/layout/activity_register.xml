@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/cocoachocolate"
-    tools:context="com.example.ratefood.RegisterActivity"
+    tools:context="com.example.ratefood.SIGN_UP.RegisterActivity"
     tools:layout_editor_absoluteY="25dp">
 
     <EditText
@@ -37,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="31dp"
+        android:layout_marginRight="31dp"
         android:layout_marginTop="20dp"
         android:text="Have an account? Login!"
         android:textColor="@android:color/background_light"

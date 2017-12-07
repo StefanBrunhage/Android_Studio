@@ -1,4 +1,4 @@
-package com.example.ratefood;
+package com.example.ratefood.Profile;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,11 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.ratefood.R;
+import com.example.ratefood.SIGN_UP.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         mAuth = FirebaseAuth.getInstance();
 
-        imageView = (ImageView) findViewById(R.id.UploadImageView);
+        imageView = (ImageView) findViewById(R.id.profilePicture);
 
         imageView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -54,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         loadUserInformation();
 
-        findViewById(R.id.SaveBtn).setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 SaveUserInformation();
