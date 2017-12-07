@@ -82,11 +82,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if(task.isSuccessful()){
                     FirebaseUser user = mAuth.getCurrentUser();
                     user.sendEmailVerification();
-                    mDatabase = mFirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
-                    HashMap<String, String> dataMap = new HashMap<String, String>();
-                    dataMap.put("Email", email);
 
-                    mDatabase.push().setValue(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    mDatabase = mFirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+                    HashMap<String, String> userMap = new HashMap<>();
+                    userMap.put("Email", email);
+                    userMap.put("Profile_image", "profile_image");
+
+                    mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
