@@ -234,7 +234,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 }
                             });
 
-                            //Göra så den skapar en ny Image här varje gång så den kan sätta in en ny bild där
+
                             mUserDatabase.child("Images").child(time).setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
