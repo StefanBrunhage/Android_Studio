@@ -59,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUserDatabase;
     private StorageReference mImageStorage;
+    private DatabaseReference mAllImagesDatabase;
 
     private ProgressDialog mProgressDialog;
 
@@ -71,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
         mCurrentUser = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUserDatabase = mFirebaseDatabase.getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+        mAllImagesDatabase = mFirebaseDatabase.getReference();
         mImageStorage = FirebaseStorage.getInstance().getReference();
 
         mProfilePicture = (ImageView) findViewById(R.id.profilePicture);
@@ -163,6 +165,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String current_user_id = mCurrentUser.getUid();
 
                 StorageReference filePath = mImageStorage.child("Profile_image").child(current_user_id + ".jpg");
+                StorageReference filePath2 = mImageStorage.child("New_images").child(current_user_id + System.currentTimeMillis() + ".jpg");
 
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -171,6 +174,30 @@ public class ProfileActivity extends AppCompatActivity {
                             String download_url = task.getResult().getDownloadUrl().toString();
 
                             mUserDatabase.child("Profile_image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        mProgressDialog.dismiss();
+                                        Toast.makeText(ProfileActivity.this, "Success Uploading.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+                        }
+                        else{
+                            Toast.makeText(ProfileActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();
+                        }
+                    }
+                });
+
+                filePath2.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String download_url = task.getResult().getDownloadUrl().toString();
+
+                            mUserDatabase.child("New_images").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
@@ -218,9 +245,17 @@ public class ProfileActivity extends AppCompatActivity {
                             String time = "" + System.currentTimeMillis();
                             HashMap<String, String> imagesMap = new HashMap<>();
 
-
+                            DatabaseReference testImages = mAllImagesDatabase.child("Images").push();
                             DatabaseReference test = mUserDatabase.child("Images").push();
                             test.setValue(imagesMap);
+                            testImages.setValue(imagesMap);
+
+                            mAllImagesDatabase.child("Images").child(time).setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(ProfileActivity.this, "Success Uploading to normal images", Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
                             //Göra så den skapar en ny Image här varje gång så den kan sätta in en ny bild där
                             mUserDatabase.child("Images").child(time).setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
